@@ -88,9 +88,11 @@ class HighwayEnv(AbstractEnv):
         :return: the corresponding reward
         """
         rewards = self._rewards(action)
-        print(rewards)
-        #reward = sum(self.config.get(name, 0) * reward for name, reward in rewards.items())
+        
         (print(self.config.get(name, 0)) for name, _ in rewards.items())
+        print("-"*20)
+        reward = sum(self.config.get(name, 0) * reward for name, reward in rewards.items())
+        
         if self.config["normalize_reward"]:
             reward = utils.lmap(reward,
                                 [self.config["collision_reward"],
