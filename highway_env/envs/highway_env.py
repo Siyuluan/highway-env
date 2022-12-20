@@ -91,6 +91,7 @@ class HighwayEnv(AbstractEnv):
         
         for name, reward  in rewards.items():
             print("*"*20)
+            print(name, reward)
             print(self.config.get(name, 0))
             print(reward)
             print(self.config.get(name, 0) * reward)
