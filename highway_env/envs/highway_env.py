@@ -88,7 +88,7 @@ class HighwayEnv(AbstractEnv):
         :return: the corresponding reward
         """
         rewards = self._rewards(action)
-        
+        '''
         for name, reward  in rewards.items():
             print("*"*20)
             print(name, reward)
@@ -96,16 +96,19 @@ class HighwayEnv(AbstractEnv):
             print(reward)
             print(self.config.get(name, 0) * reward)
         print("-"*20)
+        '''
         reward = sum(self.config.get(name, 0) * reward for name, reward in rewards.items())
+        '''
         print(self.config["collision_reward"])
         print(self.config["high_speed_reward"])
         print(self.config["right_lane_reward"])
         a = [self.config["collision_reward"],self.config["high_speed_reward"] + self.config["right_lane_reward"]]
         print(a)
+        '''
         if self.config["normalize_reward"]:
-            print("In normalize_reward")
+            #print("In normalize_reward")
             reward = utils.lmap(reward,
-                                [self.config["collision_reward"],
+                                [self.config["collision_reward"]+self.config["lane_change_reward"],
                                  self.config["high_speed_reward"] + self.config["right_lane_reward"]],
                                 [0, 1])
         reward *= rewards['on_road_reward']
@@ -122,7 +125,8 @@ class HighwayEnv(AbstractEnv):
             "collision_reward": float(self.vehicle.crashed),
             "right_lane_reward": lane / max(len(neighbours) - 1, 1),
             "high_speed_reward": np.clip(scaled_speed, 0, 1),
-            "on_road_reward": float(self.vehicle.on_road)
+            "on_road_reward": float(self.vehicle.on_road),
+            "lane_change_reward": action in [0,2]
         }
 
     def _is_terminated(self) -> bool:
