@@ -96,8 +96,10 @@ class HighwayEnv(AbstractEnv):
             print(self.config.get(name, 0) * reward)
         print("-"*20)
         reward = sum(self.config.get(name, 0) * reward for name, reward in rewards.items())
-        a = self.config["collision_reward"],
-                                 self.config["high_speed_reward"] + self.config["right_lane_reward"]
+        print(self.config["collision_reward"])
+        print(self.config["high_speed_reward"])
+        print(self.config["right_lane_reward"])
+        a = [self.config["collision_reward"],self.config["high_speed_reward"] + self.config["right_lane_reward"]]
         print(a)
         if self.config["normalize_reward"]:
             print("In normalize_reward")
