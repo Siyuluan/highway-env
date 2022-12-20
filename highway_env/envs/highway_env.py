@@ -89,8 +89,10 @@ class HighwayEnv(AbstractEnv):
         """
         rewards = self._rewards(action)
         
-        for name, _ in rewards.items():
+        for name, reward  in rewards.items():
             print(self.config.get(name, 0))
+            print(reward)
+            print(self.config.get(name, 0) * reward)
         print("-"*20)
         reward = sum(self.config.get(name, 0) * reward for name, reward in rewards.items())
         
