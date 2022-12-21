@@ -105,6 +105,17 @@ class HighwayEnv(AbstractEnv):
         a = [self.config["collision_reward"],self.config["high_speed_reward"] + self.config["right_lane_reward"]]
         print(a)
         '''
+        
+        '''
+        In this code : reward = utils.lmap(reward, [self.config["collision_reward"],self.config["high_speed_reward"] + self.config["right_lane_reward"]], [0, 1])
+
+        [self.config["collision_reward"],self.config["high_speed_reward"] + self.config["right_lane_reward"]] is an Interval, let us set as [min, max]
+
+        Reward is in [min, max].  min<= Reward<=max. Now we want to change this to [0,1]. And also we need to add another reward: lane_change_reward which is negative. 
+
+        So I think first ,we need to find the new min value, which is self.config["collision_reward"] + self.config["lane_change_reward "]. Max didn’t change.
+
+        '''
         if self.config["normalize_reward"]:
             #print("In normalize_reward")
             reward = utils.lmap(reward,
@@ -126,7 +137,7 @@ class HighwayEnv(AbstractEnv):
             "right_lane_reward": lane / max(len(neighbours) - 1, 1),
             "high_speed_reward": np.clip(scaled_speed, 0, 1),
             "on_road_reward": float(self.vehicle.on_road),
-            "lane_change_reward": action in [0,2]
+            "lane_change_reward": action in [0,2] #siyu
         }
 
     def _is_terminated(self) -> bool:
